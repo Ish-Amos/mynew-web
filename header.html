@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Learning Dashboard</title>
+  <link rel="stylesheet" href="header.css">
+</head>
+<body>
+  <!-- Header Section -->
+  <header class="header">
+    <!-- Trophy Icon -->
+    <a href="goals.html" class="goal-link">🏆</a>
+
+    <!-- Center Logo -->
+    <div class="logo">🌐 Language Learning Hub</div>
+
+    <!-- Profile Section (clickable for image upload) -->
+    <div class="profile" onclick="openUploadModal()">
+      <img src="mark.jpeg" alt="User Profile Picture" class="profile-pic" id="profilePic">
+    </div>
+  </header>
+
+  <!-- Profile Picture Upload Modal -->
+  <div class="modal" id="uploadModal">
+    <div class="modal-content">
+      <h3>Upload Profile Picture</h3>
+      <input type="file" id="imageInput" accept="image/*">
+      <button onclick="uploadImage()">Upload</button>
+      <button onclick="closeUploadModal()">Cancel</button>
+    </div>
+  </div>
+
+  <script>
+    // Load stored profile picture on page load
+    window.onload = function() {
+      const savedImage = localStorage.getItem('profileImage');
+      if (savedImage) {
+        document.getElementById('profilePic').src = savedImage;
+      }
+    };
+
+    // Open the upload modal
+    function openUploadModal() {
+      document.getElementById('uploadModal').style.display = 'block';
+    }
+
+    // Close the upload modal
+    function closeUploadModal() {
+      document.getElementById('uploadModal').style.display = 'none';
+    }
+
+    // Upload and save the new profile picture
+    function uploadImage() {
+      const input = document.getElementById('imageInput');
+      if (input.files && input.files[0]) {
+        const reader = new FileReader();
+        
+        reader.onload = function(e) {
+          // Set the profile picture
+          const profilePic = document.getElementById('profilePic');
+          profilePic.src = e.target.result;
+
+          // Save the image data in Local Storage
+          localStorage.setItem('profileImage', e.target.result);
+        };
+        
+        reader.readAsDataURL(input.files[0]);
+        closeUploadModal();
+      }
+    }
+  </script>
+  
+    <!-- Streak Information Section -->
+    <section class="streak-section">
+      <a href="5-day-streak.html" class="streak-link">
+        <span class="fire-icon">🔥</span> 5-Day Streak
+      </a>
+      <a href="10-day-streak.html" class="streak-link">
+        <span class="fire-icon">🔥</span> 10-Day Streak
+      </a>
+      <a href="15-day-streak.html" class="streak-link">
+        <span class="fire-icon">🔥</span> 15-Day Streak
+      </a>
+    </section>
+        
+    <div class="chatbot-container" id="chatbot">
+      <div class="chatbot-header">
+        <img src="mark.jpeg" alt="AI Profile" class="ai-profile-img"> <!-- Replace with your AI profile image -->
+        
+        <span class="close-btn" onclick="toggleChatbot()">❌</span>
+      </div>
+      <div class="chatbot-body" id="chatbotBody"></div>
+      <div class="chatbot-input-container">
+        <input type="text" id="chatInput" class="chatbot-input" placeholder="Type your message..." onkeydown="if(event.key === 'Enter') sendMessage()">
+        <button class="send-btn" onclick="sendMessage()">Send</button>
+      </div>
+    </div>
+  
+    <!-- Chatbot Toggle Button -->
+    <a href="javascript:void(0);" id="toggleBtn" class="chatbot-toggle-btn" onclick="toggleChatbot()">💬</a>
+  
+    <script>
+      // Function to toggle chatbot visibility
+      function toggleChatbot() {
+        const chatbot = document.getElementById('chatbot');
+        const toggleBtn = document.getElementById('toggleBtn');
+        const currentDisplay = chatbot.style.display;
+  
+        // Toggle the visibility of the chatbot
+        if (currentDisplay === 'none' || currentDisplay === '') {
+          chatbot.style.display = 'block';
+          chatbot.classList.add('show');
+          toggleBtn.classList.add('hide');
+        } else {
+          chatbot.style.display = 'none';
+          chatbot.classList.remove('show');
+          toggleBtn.classList.remove('hide');
+        }
+      }
+  
+      // Function to send a message and simulate bot response
+      function sendMessage() {
+        const input = document.getElementById('chatInput');
+        const message = input.value.trim();
+  
+        if (message === "") return; // Prevent sending empty messages
+  
+        // Display user message with avatar
+        appendMessage(message, 'user');
+  
+        // Simulate bot response after a short delay
+        const botResponse = getBotResponse(message);
+        setTimeout(function() {
+          appendMessage(botResponse, 'bot');
+        }, 500);
+  
+        // Clear the input field after sending message
+        input.value = '';
+      }
+  
+      // Function to append a message to the chat window
+      function appendMessage(message, sender) {
+        const chatbotBody = document.getElementById('chatbotBody');
+        const messageElement = document.createElement('div');
+        messageElement.classList.add('chatbot-message', sender);
+  
+        // Add the avatar image to the message
+        const avatar = document.createElement('img');
+        avatar.classList.add('avatar');
+        avatar.src = sender === 'user' ? 'mark.jpeg' : 'mark.jpeg'; // Replace with your avatars
+        messageElement.appendChild(avatar);
+  
+        // Add the text content to the message
+        const textNode = document.createElement('span');
+        textNode.textContent = message;
+        messageElement.appendChild(textNode);
+  
+        chatbotBody.appendChild(messageElement);
+  
+        // Scroll to the bottom to show new messages
+        chatbotBody.scrollTop = chatbotBody.scrollHeight;
+      }
+  
+      // Function to generate a response from the bot based on user input
+      function getBotResponse(input) {
+        const lowerInput = input.toLowerCase();
+  
+        if (lowerInput.includes("hello") || lowerInput.includes("hi")) {
+          return "Hi! How can I assist you today?";
+        } else if (lowerInput.includes("help")) {
+          return "Sure! What do you need help with?";
+        } else if (lowerInput.includes("goodbye")) {
+          return "Goodbye! Come back anytime.";
+        } else {
+          return "Sorry, I didn't understand that. Can you rephrase?";
+        }
+      }
+    </script>
+  
+
+
+
+
+    
+    <h2>📊 Progress Overview</h2>
+    <section class="streak-section">
+      
+      <div class="progress-container">
+        
+        <!-- French Progress Stats -->
+        <div class="progress-item">
+         
+          <h3>🇫🇷 FR</h3>
+          <div class="stats">
+            <div class="stat-item">📖 <span class="stat-value" id="french-vocab">0</span></div>
+            <div class="stat-item">🎥 <span class="stat-value" id="french-vid">0</span></div>
+            <div class="stat-item">🔊 <span class="stat-value" id="french-aud">0</span></div>
+            <div class="stat-item">📜 <span class="stat-value" id="french-stor">0</span></div>
+          </div>
+        </div>
+    
+        <!-- Kiswahili Progress Stats -->
+        <div class="progress-item">
+          
+          <h3>🇰🇪 SW</h3>
+          <div class="stats">
+            <div class="stat-item">📖 <span class="stat-value" id="kiswahili-vocab">0</span></div>
+            <div class="stat-item">🎥 <span class="stat-value" id="kiswahili-vid">0</span></div>
+            <div class="stat-item">🔊 <span class="stat-value" id="kiswahili-aud">0</span></div>
+            <div class="stat-item">📜 <span class="stat-value" id="kiswahili-stor">0</span></div>
+          </div>
+        </div>
+    
+        <!-- English Progress Stats -->
+        <div class="progress-item">
+          <h3>🇬🇧 EN</h3>
+          <div class="stats">
+            <div class="stat-item">📖 <span class="stat-value" id="english-vocab">0</span></div>
+            <div class="stat-item">🎥 <span class="stat-value" id="english-vid">0</span></div>
+            <div class="stat-item">🔊 <span class="stat-value" id="english-aud">0</span></div>
+            <div class="stat-item">📜 <span class="stat-value" id="english-stor">0</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <h2>🏛️ Learning Rooms</h2>
+  <!-- Learning Rooms Section -->
+  <section class="streak-section">
+    <!-- French Room -->
+    <div class="learning-room french" onclick="openRoom('french')">
+      <h3>🇫🇷 FR</h3>
+    </div>
+
+    <!-- Swahili Room -->
+    <div class="learning-room swahili" onclick="openRoom('swahili')">
+      <h3>🇰🇪 SW</h3>
+    </div>
+
+    <!-- English Room -->
+    <div class="learning-room english" onclick="openRoom('english')">
+      <h3>🇬🇧 EN</h3>
+    </div>
+  </section>
+
+  <script>
+    // Function to simulate the opening of a room when clicked
+    function openRoom(language) {
+      alert("Entering " + language + " learning room!");
+      // You can replace the alert with actual room navigation or other actions.
+    }
+  </script>
+<!-- Quick Actions -->
+<h2>⚡ Quick Actions</h2>
+<section class="streak-section">
+  
+  <a href="5-day-streak.html" class="streak-link">
+    <span class="fire-icon">📺</span> cont_Vid
+  </a>
+  <a href="10-day-streak.html" class="streak-link">
+    <span class="fire-icon">🔊</span> Audio
+  </a>
+  <a href="15-day-streak.html" class="streak-link">
+    <span class="fire-icon">🤫</span> quiz
+  </a>
+</section> 
+<section class="streak-section">
+  <a href="15-day-streak.html" class="streak-link">
+    <span class="fire-icon">📜</span> Strs
+  </a>
+
+  <a href="notifications.html" class="streak-link">
+    <span class="fire-icon">🔔</span> Alrts
+</a>
+<a href="ebook.html" class="streak-link">
+  <span class="fire-icon">📚</span>Read
+</a> 
+</section>
+<section class="streak-section">
+<a href="gallery.html" class="streak-link">
+  <span class="fire-icon">🖼️</span> Gall
+</a>
+<a href="calendar.html" class="streak-link">
+  <span class="fire-icon">📅</span> Evnt
+</a>
+<a href="games.html" class="streak-link">
+  <span class="fire-icon">🎮</span> Games
+</a>
+</section>
+<section class="streak-section">
+<a href="chat.html" class="streak-link">
+  <span class="fire-icon">💬</span> Dialg
+</a>
+<a href="chat.html" class="streak-link">
+  <span class="fire-icon">🌠</span> folks
+</a>
+</section>
+
+<footer class="footer">
+  <div class="footer-content">
+    <div class="footer-links">
+      <a href="#about">About</a>
+      <a href="#privacy-policy">Privacy Policy</a>
+      <a href="#terms">Terms of Service</a>
+      <a href="#contact-us">Contact Us</a>
+    </div>
+    <div class="social-links">
+      <a href="https://wa.me/your-number" target="_blank"><img src="whatsapp.png" alt="WhatsApp"></a>
+      <a href="https://instagram.com/your-profile" target="_blank"><img src="instagram.png" alt="Instagram"></a>
+      <a href="https://youtube.com/your-channel" target="_blank"><img src="youtube.gif" alt="YouTube"></a>
+      <a href="https://plus.google.com/your-profile" target="_blank"><img src="google.png" alt="Google"></a>
+    </div>
+    <div class="footer-bottom">
+      <p>🌍&copy; Language Learning Hub 2024 | Powered by Amos</p>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
